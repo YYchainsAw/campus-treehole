@@ -1,0 +1,28 @@
+# IDE and editor settings
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+
+# Java and Maven build outputs
+target/
+*.class
+
+# WeChat developer tools: machine-specific settings
+project.private.config.json
+miniprogram/miniprogram_npm/
+node_modules/
+
+# Local environment variables and application secrets
+.env
+.env.*
+!.env.example
+application-local.properties
+application-local.yml
+application-local.yaml
+
+# Logs and operating system files
+*.log
+.DS_Store
+Thumbs.db
