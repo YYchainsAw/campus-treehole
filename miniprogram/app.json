@@ -1,12 +1,14 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/logs/logs"
+    "pages/mine/mine"
   ],
   "window": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "Weixin",
-    "navigationBarBackgroundColor": "#ffffff"
+    "navigationBarTitleText": "校园树洞",
+    "navigationBarBackgroundColor": "#f2f6f5",
+    "backgroundTextStyle": "dark",
+    "enablePullDownRefresh": true
   },
   "style": "v2",
   "componentFramework": "glass-easel",

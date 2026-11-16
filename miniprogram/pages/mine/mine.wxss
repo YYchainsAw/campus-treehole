@@ -1,0 +1,6 @@
+@import "../index/index.wxss";
+
+.post-actions { display: flex; justify-content: flex-end; margin-top: 18rpx; }
+.delete { margin: 0; padding: 0 22rpx; background: #f8ece9; color: #a74d48; font-size: 24rpx; line-height: 56rpx; border-radius: 10rpx; }
+.delete::after { border: 0; }
+.delete[disabled] { color: #bca4a0; background: #f5f1f0; }

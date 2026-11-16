@@ -1,27 +1,39 @@
-<!--index.wxml-->
-<scroll-view class="scrollarea" scroll-y type="list">
-  <view class="container">
-    <view class="userinfo">
-      <block wx:if="{{canIUseNicknameComp && !hasUserInfo}}">
-        <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
-          <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
-        </button>
-        <view class="nickname-wrapper">
-          <text class="nickname-label">昵称</text>
-          <input type="nickname" class="nickname-input" placeholder="请输入昵称" bind:change="onInputChange" />
-        </view>
-      </block>
-      <block wx:elif="{{!hasUserInfo}}">
-        <button wx:if="{{canIUseGetUserProfile}}" bindtap="getUserProfile"> 获取头像昵称 </button>
-        <view wx:else> 请使用2.10.4及以上版本基础库 </view>
-      </block>
-      <block wx:else>
-        <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-        <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-      </block>
+<view class="page">
+  <view class="intro">
+    <text class="eyebrow">CAMPUS TREEHOLE</text>
+    <view class="intro-heading">
+      <view class="heading">校园树洞</view>
+      <button class="my-posts" bindtap="openMyPosts">我的树洞</button>
     </view>
-    <view class="usermotto">
-      <text class="user-motto">{{motto}}</text>
+    <view class="intro-note">写下此刻，也看看大家在想什么。</view>
+  </view>
+  <view class="composer">
+    <view class="composer-title">写一条树洞</view>
+    <textarea class="editor" placeholder="分享一点今天的想法……" value="{{content}}" maxlength="1000" disabled="{{submitting}}" bindinput="onContentInput" />
+    <view class="composer-footer">
+      <text class="count">{{content.length}} / 1000</text>
+      <button class="publish" bindtap="publish" loading="{{submitting}}" disabled="{{submitting}}">发布</button>
     </view>
   </view>
-</scroll-view>
+  <view class="section-header">
+    <view class="section-title">树洞广场</view>
+    <text class="section-hint">最近发布</text>
+  </view>
+  <view wx:if="{{loading && !posts.length}}" class="state">正在加载树洞…</view>
+  <view wx:elif="{{loadError && !posts.length}}" class="state">
+    <view>暂时无法加载树洞</view>
+    <button class="retry" bindtap="retry">重新加载</button>
+  </view>
+  <view wx:elif="{{!posts.length}}" class="state">这里还没有树洞，写下第一条吧。</view>
+  <view wx:if="{{loadError && posts.length}}" class="inline-error" bindtap="retry">刷新失败，点击重试</view>
+  <view wx:for="{{posts}}" wx:key="id" class="post">
+    <view class="post-top">
+      <view class="post-mark"></view>
+      <text class="post-label">树洞</text>
+      <text class="post-time">{{item.displayTime}}</text>
+    </view>
+    <view class="post-content">{{item.content}}</view>
+  </view>
+  <view wx:if="{{loadingMore}}" class="list-end">正在加载…</view>
+  <view wx:elif="{{posts.length && !hasMore}}" class="list-end">已显示全部树洞</view>
+</view>
