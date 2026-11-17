@@ -19,7 +19,7 @@ class MyPostsDisabledIntegrationTests {
 
     @Test
     void personalOperationsAreUnavailableOutsideLocalProfile() throws Exception {
-        mvc.perform(get("/api/posts/mine")).andExpect(status().is4xxClientError());
-        mvc.perform(delete("/api/posts/1")).andExpect(status().is4xxClientError());
+        mvc.perform(get("/api/posts/mine")).andExpect(status().isUnauthorized());
+        mvc.perform(delete("/api/posts/1")).andExpect(status().isUnauthorized());
     }
 }

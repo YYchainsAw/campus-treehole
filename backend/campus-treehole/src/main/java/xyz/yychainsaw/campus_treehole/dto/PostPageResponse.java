@@ -1,4 +1,4 @@
-package xyz.yychainsaw.campus_treehole.post.dto;
+package xyz.yychainsaw.campus_treehole.dto;
 
 import java.util.List;
 

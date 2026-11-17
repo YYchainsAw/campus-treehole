@@ -1,7 +1,7 @@
-package xyz.yychainsaw.campus_treehole.post.controller;
+package xyz.yychainsaw.campus_treehole.controller;
 
 import jakarta.validation.Valid;
-import org.springframework.context.annotation.Profile;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,43 +13,46 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-import xyz.yychainsaw.campus_treehole.post.dto.CreatePostRequest;
-import xyz.yychainsaw.campus_treehole.post.dto.PostPageResponse;
-import xyz.yychainsaw.campus_treehole.post.dto.PostResponse;
-import xyz.yychainsaw.campus_treehole.post.service.PostService;
+import xyz.yychainsaw.campus_treehole.config.CurrentUserResolver;
+import xyz.yychainsaw.campus_treehole.dto.CreatePostRequest;
+import xyz.yychainsaw.campus_treehole.dto.PostPageResponse;
+import xyz.yychainsaw.campus_treehole.dto.PostResponse;
+import xyz.yychainsaw.campus_treehole.service.PostService;
 
-/** Temporary operations for local development, until real login is implemented. */
 @RestController
-@Profile("local")
 @RequestMapping("/api/posts")
-public class LocalPostController {
-    private static final long LOCAL_USER_ID = 1L;
+public class AuthenticatedPostController {
     private final PostService postService;
+    private final CurrentUserResolver currentUser;
 
-    public LocalPostController(PostService postService) {
+    public AuthenticatedPostController(PostService postService, CurrentUserResolver currentUser) {
         this.postService = postService;
+        this.currentUser = currentUser;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public PostResponse create(@Valid @RequestBody CreatePostRequest request) {
-        return postService.create(LOCAL_USER_ID, request.content());
+    public PostResponse create(@Valid @RequestBody CreatePostRequest request, HttpServletRequest httpRequest) {
+        return postService.create(currentUser.required(httpRequest), request.content(), request.category());
     }
 
     @GetMapping("/mine")
     public PostPageResponse mine(@RequestParam(defaultValue = "0") int page,
-                                 @RequestParam(defaultValue = "20") int size) {
+                                 @RequestParam(defaultValue = "20") int size,
+                                 HttpServletRequest request) {
+        long userId = currentUser.required(request);
         PostController.validatePagination(page, size);
-        return postService.listByUser(LOCAL_USER_ID, page, size);
+        return postService.listByUser(userId, page, size);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable long id) {
+    public void delete(@PathVariable long id, HttpServletRequest request) {
+        long userId = currentUser.required(request);
         if (id <= 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "id must be positive");
         }
-        if (!postService.deleteByUser(id, LOCAL_USER_ID)) {
+        if (!postService.deleteByUser(id, userId)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "post not found");
         }
     }

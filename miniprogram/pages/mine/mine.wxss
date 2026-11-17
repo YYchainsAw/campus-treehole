@@ -1,6 +1,11 @@
 @import "../index/index.wxss";
 
-.post-actions { display: flex; justify-content: flex-end; margin-top: 18rpx; }
+.session-button { display: inline-block; margin: 18rpx 16rpx 0 0; padding: 0 20rpx; font-size: 24rpx; line-height: 56rpx; color: #245d50; background: #e2efea; border-radius: 10rpx; }
+.session-button::after { border: 0; }
+.account-form { margin-top: 24rpx; padding: 24rpx; background: #fff; border-radius: 16rpx; }
+.account-caption { color: #317b70; font-size: 26rpx; font-weight: 600; }
+.account-input { box-sizing: border-box; width: 100%; margin-top: 16rpx; padding: 16rpx; border: 1rpx solid #dcebe7; border-radius: 10rpx; font-size: 25rpx; }
+
 .delete { margin: 0; padding: 0 22rpx; background: #f8ece9; color: #a74d48; font-size: 24rpx; line-height: 56rpx; border-radius: 10rpx; }
 .delete::after { border: 0; }
 .delete[disabled] { color: #bca4a0; background: #f5f1f0; }

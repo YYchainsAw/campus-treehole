@@ -21,6 +21,6 @@ class PostCreationDisabledIntegrationTests {
     void rejectsPublishingWithoutLocalProfile() throws Exception {
         mvc.perform(post("/api/posts").contentType(MediaType.APPLICATION_JSON)
                         .content("{\"content\":\"hello\"}"))
-                .andExpect(status().isMethodNotAllowed());
+                .andExpect(status().isUnauthorized());
     }
 }

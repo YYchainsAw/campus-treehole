@@ -27,6 +27,14 @@ class LocalMyPostsIntegrationTests {
     @Autowired private JdbcTemplate jdbc;
 
     @Test
+    void invalidTokenDoesNotFallBackToLocalIdentity() throws Exception {
+        mvc.perform(get("/api/posts/mine").header("Authorization", "Bearer invalid"))
+                .andExpect(status().isUnauthorized());
+        mvc.perform(delete("/api/posts/1").header("Authorization", "Bearer invalid"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
     void showsOnlyOwnPostsWithPagination() throws Exception {
         String marker = UUID.randomUUID().toString();
         long first = insertPost(1, "first-" + marker);

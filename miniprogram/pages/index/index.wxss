@@ -10,6 +10,14 @@ page { background: #f2f6f5; color: #203c3b; }
 .composer { background: #fff; border: 1rpx solid #dcebe7; border-radius: 20rpx; padding: 26rpx; box-shadow: 0 8rpx 28rpx rgba(31, 77, 68, .05); }
 .composer-title { font-size: 28rpx; font-weight: 600; }
 .editor { box-sizing: border-box; width: 100%; height: 160rpx; margin-top: 20rpx; font-size: 28rpx; line-height: 1.6; }
+.category-row { display: flex; flex-wrap: wrap; gap: 12rpx; padding: 4rpx 0 16rpx; }
+.category { margin: 0; padding: 0 18rpx; border-radius: 10rpx; background: #f0f5f3; color: #557b72; font-size: 23rpx; line-height: 52rpx; }
+.category::after { border: 0; }
+.category.selected { background: #dceee8; color: #236e62; font-weight: 600; }
+.filter-scroll { width: 100%; white-space: nowrap; }
+.filter-row { display: inline-flex; flex-wrap: nowrap; }
+.comment { margin: 0; padding: 0 22rpx; border-radius: 10rpx; background: #f0f5f3; color: #4d7971; font-size: 24rpx; line-height: 56rpx; }
+.comment::after { border: 0; }
 .composer-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 18rpx; border-top: 1rpx solid #eaf1ef; }
 .count { color: #839b96; font-size: 23rpx; }
 .publish { margin: 0; padding: 0 38rpx; border-radius: 12rpx; background: #317b70; color: #fff; font-size: 26rpx; line-height: 68rpx; }
@@ -24,6 +32,11 @@ page { background: #f2f6f5; color: #203c3b; }
 .post-label { margin-left: 12rpx; color: #4d7971; font-size: 23rpx; font-weight: 600; }
 .post-time { margin-left: auto; color: #90a5a1; font-size: 22rpx; }
 .post-content { margin-top: 18rpx; color: #27413e; font-size: 29rpx; line-height: 1.7; white-space: pre-wrap; word-break: break-all; }
+.post-actions { display: flex; justify-content: flex-end; align-items: center; gap: 16rpx; margin-top: 18rpx; }
+.like { margin: 0; padding: 0 22rpx; border-radius: 10rpx; background: #f0f5f3; color: #4d7971; font-size: 24rpx; line-height: 56rpx; }
+.like::after { border: 0; }
+.like.liked { background: #e1efeb; color: #236e62; font-weight: 600; }
+.like[disabled] { color: #a4b5b1; background: #f2f4f3; }
 .state { padding: 54rpx 20rpx; color: #829893; font-size: 26rpx; text-align: center; }
 .inline-error { padding: 18rpx; color: #a96b42; font-size: 24rpx; text-align: center; }
 .retry { display: inline-block; margin-top: 20rpx; padding: 0 28rpx; background: #dcece7; color: #317b70; font-size: 24rpx; line-height: 60rpx; }

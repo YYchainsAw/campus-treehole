@@ -1,4 +1,4 @@
-package xyz.yychainsaw.campus_treehole.post.entity;
+package xyz.yychainsaw.campus_treehole.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,15 +21,19 @@ public class Post {
     @Column(nullable = false, length = 1000)
     private String content;
 
+    @Column(nullable = false, length = 16)
+    private String category;
+
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
     protected Post() {
     }
 
-    public Post(Long userId, String content, LocalDateTime createdAt) {
+    public Post(Long userId, String content, String category, LocalDateTime createdAt) {
         this.userId = userId;
         this.content = content;
+        this.category = category;
         this.createdAt = createdAt;
     }
 
@@ -39,6 +43,10 @@ public class Post {
 
     public String getContent() {
         return content;
+    }
+
+    public String getCategory() {
+        return category;
     }
 
     public LocalDateTime getCreatedAt() {

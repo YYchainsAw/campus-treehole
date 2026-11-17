@@ -2,7 +2,21 @@
   <view class="intro">
     <text class="eyebrow">MY TREEHOLES</text>
     <view class="heading">我的树洞</view>
-    <view class="intro-note">当前使用本地测试身份。</view>
+    <view class="intro-note" wx:if="{{sessionState === 'local'}}">未登录；本地开发模式使用测试身份。</view>
+    <view class="intro-note" wx:elif="{{sessionState === 'loggedIn'}}">已登录。</view>
+    <view class="intro-note" wx:else>登录已失效，请重新登录或退出。</view>
+    <button wx:if="{{sessionState !== 'loggedIn' && !accountMode}}" class="session-button" bindtap="showAccountLogin" disabled="{{signingIn || deleting}}">本地账号登录</button>
+    <button wx:if="{{sessionState !== 'loggedIn' && !accountMode}}" class="session-button" bindtap="signIn" disabled="{{signingIn || deleting}}" loading="{{signingIn}}">微信登录</button>
+    <button wx:if="{{sessionState !== 'local'}}" class="session-button" bindtap="signOut" disabled="{{signingIn || deleting}}">退出登录</button>
+    <view wx:if="{{sessionState !== 'loggedIn' && accountMode}}" class="account-form">
+      <view class="account-caption">{{accountMode === 'register' ? '注册本地演示账号' : '登录本地演示账号'}}</view>
+      <input class="account-input" placeholder="账号：3–32位字母、数字或下划线" maxlength="32" value="{{username}}" bindinput="onUsernameInput" disabled="{{signingIn}}" />
+      <input class="account-input" password placeholder="密码：6–128位" maxlength="128" value="{{password}}" bindinput="onPasswordInput" disabled="{{signingIn}}" />
+      <button class="session-button" bindtap="submitAccount" loading="{{signingIn}}" disabled="{{signingIn}}">{{accountMode === 'register' ? '注册并登录' : '登录'}}</button>
+      <button wx:if="{{accountMode === 'login'}}" class="session-button" bindtap="showAccountRegister" disabled="{{signingIn}}">注册账号</button>
+      <button wx:else class="session-button" bindtap="showAccountLogin" disabled="{{signingIn}}">已有账号</button>
+      <button class="session-button" bindtap="hideAccountForm" disabled="{{signingIn}}">返回</button>
+    </view>
   </view>
   <view wx:if="{{loading && !posts.length}}" class="state">正在加载树洞…</view>
   <view wx:elif="{{loadError && !posts.length}}" class="state">
@@ -14,12 +28,14 @@
   <view wx:for="{{posts}}" wx:key="id" class="post">
     <view class="post-top">
       <view class="post-mark"></view>
-      <text class="post-label">我的树洞</text>
+      <text class="post-label">{{item.categoryLabel}}</text>
       <text class="post-time">{{item.displayTime}}</text>
     </view>
     <view class="post-content">{{item.content}}</view>
     <view class="post-actions">
-      <button class="delete" data-id="{{item.id}}" bindtap="confirmDelete" disabled="{{deleting}}" loading="{{deleting && deletingId === item.id}}">删除</button>
+      <button class="comment" data-id="{{item.id}}" bindtap="openComments">评论</button>
+      <button class="like {{item.likedByMe ? 'liked' : ''}}" data-id="{{item.id}}" bindtap="toggleLike" disabled="{{pendingLikes[item.id] || deleting || signingIn}}" aria-label="{{item.likedByMe ? '取消点赞' : '点赞'}}，{{item.likeCount}} 个赞">{{item.likedByMe ? '已赞' : '赞'}} · {{item.likeCount}}</button>
+      <button class="delete" data-id="{{item.id}}" bindtap="confirmDelete" disabled="{{deleting || signingIn}}" loading="{{deleting && deletingId === item.id}}">删除</button>
     </view>
   </view>
   <view wx:if="{{loadingMore}}" class="list-end">正在加载…</view>
